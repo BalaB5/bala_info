@@ -1,1 +1,0 @@
-https://github.com/Abhishek-Sharma-dev-13/translation-management-service
