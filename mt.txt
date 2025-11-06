@@ -1,0 +1,402 @@
+screen info : whatsapp Message template create, lable suggestion when click suggestion lable add "#" with "lable" on message (exmple if click on "name" add "#name"), then show style suggestion intalic, bolt ,extra..
+style suggestion place on the 
+
+
+{
+  "context": {
+    "app_scale": "large",
+    "tech_stack": [
+      "Flutter",
+      "GetX",
+      "GetStorage",
+      "GetX Localization",
+      "HTTP"
+    ],
+    "http_service": "Reuse existing HttpService for all API calls (get/post/put/multipart with built-in error handling).",
+    "architecture": "Clean Architecture (GetX)",
+    "constraints": {
+      "themes": "Use Get.theme only (no custom themes)",
+      "localization": "Use GetX Localization",
+      "feedback": "Use Flutter toast (no SnackBar)",
+      "performance": [
+        "avoid memory leaks",
+        "minimize widget rebuilds",
+        "ensure smooth UI",
+        "provide instant feedback"
+      ]
+    }
+  },
+  "inputs": {
+    "api_endpoints": [
+      {
+        "name": "<endpoint_name>",
+        "method": "GET|POST|PUT|MULTIPART",
+        "path": "<relative_path>",
+        "headers": {
+          "Authorization": "<token_optional>"
+        },
+        "query_params": {
+          "<key>": "<value>"
+        },
+        "body_example": {
+          "<key>": "<value>"
+        }
+      }
+    ],
+    "json_responses": {
+      "<endpoint_name_response>": {
+        "status": true,
+        "message": "Success",
+        "data": {
+          "...": "..."
+        }
+      }
+    },
+    "ui_image": "<screen_image_link_or_description>",
+    "ux_flow": "Describe screen flow and user journey."
+  },
+  "module_scope": {
+    "type": "single_screen",
+    "screen_key": "<unique_screen_id>",
+    "route": "/<route>",
+    "storage_keys": [
+      "<GetStorage_key_if_any>"
+    ]
+  },
+  "deliverables": {
+    "code": [
+      "controller",
+      "models",
+      "repository",
+      "view_widgets",
+      "bindings",
+      "routes",
+      "localization_en"
+    ],
+    "rules": [
+      "Reuse HttpService for network operations",
+      "Follow GetX structure (controllers, models, repository, views, bindings, routes)",
+      "Use toast for feedback (no SnackBar)",
+      "Dispose resources to avoid leaks",
+      "Place Obx/GetBuilder carefully to minimize rebuilds"
+    ]
+  },
+  "screen_spec": {
+    "name": "<Screen Name>",
+    "inputs_and_controls": [
+      {
+        "id": "<field_id>",
+        "widget": "TextFormField|Dropdown|DatePicker|Switch|Checkbox",
+        "hint": "<hint_text>",
+        "constraints": {
+          "required": true,
+          "min_length": 3,
+          "max_length": 50,
+          "pattern": "<regex_optional>"
+        },
+        "keyboard_type": "text|email|number|phone"
+      }
+    ],
+    "user_interactions": [
+      {
+        "trigger": "onTap|onPressed|onChanged",
+        "target_id": "<widget_id>",
+        "action": "navigate|submit_form|refresh|open_sheet",
+        "navigation": {
+          "to": "/<route>",
+          "with_args": {
+            "<key>": "<value>"
+          }
+        },
+        "state_changes": [
+          "loading=true",
+          "show_toast='Saved'",
+          "loading=false"
+        ]
+      }
+    ],
+    "validation_rules": [
+      {
+        "field_id": "<field_id>",
+        "rules": [
+          "required",
+          "email_format|min|max|regex"
+        ],
+        "error_messages": {
+          "required": "This field is required",
+          "email_format": "Enter a valid email"
+        }
+      }
+    ],
+    "api_mapping": {
+      "load_on_init": {
+        "endpoint": "<endpoint_name>",
+        "params": {
+          "<q>": "<v>"
+        },
+        "maps_to_model": "<ModelName>"
+      },
+      "submit_actions": [
+        {
+          "trigger_id": "<submit_button_id>",
+          "endpoint": "<endpoint_name>",
+          "method": "POST|PUT|MULTIPART",
+          "body": {
+            "<field_id>": "<controller.value>"
+          },
+          "on_success": [
+            "update_state",
+            "show_toast:'Success'",
+            "navigate:'/next'"
+          ],
+          "on_error": [
+            "show_toast:'Failed'",
+            "set_error_state"
+          ]
+        }
+      ]
+    },
+    "state_management": {
+      "controller": "<ScreenController>",
+      "observables": [
+        "isLoading",
+        "items",
+        "formState",
+        "error"
+      ],
+      "rebuild_strategy": "Wrap only dynamic parts with Obx/GetBuilder; keep Scaffold static"
+    },
+    "storage_usage": {
+      "read": [
+        {
+          "key": "<GetStorage_key>",
+          "purpose": "auth token"
+        }
+      ],
+      "write": [
+        {
+          "key": "<GetStorage_key>",
+          "source": "<controller.field>"
+        }
+      ]
+    },
+    "localization_keys_en": [
+      {
+        "key": "screen.title",
+        "value": "Title"
+      },
+      {
+        "key": "button.submit",
+        "value": "Submit"
+      },
+      {
+        "key": "toast.success",
+        "value": "Saved successfully"
+      }
+    ],
+    "routes": {
+      "define": [
+        {
+          "name": "/<route>",
+          "page": "<ScreenWidget>",
+          "binding": "<ScreenBinding>"
+        }
+      ],
+      "guards": [
+        {
+          "type": "auth_guard_optional",
+          "redirect_to": "/login"
+        }
+      ]
+    },
+    "feedback_toast": {
+      "library": "fluttertoast",
+      "patterns": [
+        {
+          "when": "success",
+          "message_key": "toast.success"
+        },
+        {
+          "when": "error",
+          "message_key": "toast.error"
+        }
+      ]
+    },
+    "error_handling": {
+      "network": [
+        "timeout_toast",
+        "optional_retry"
+      ],
+      "validation": [
+        "field_level_errors",
+        "disable_submit_if_invalid"
+      ]
+    },
+    "performance": {
+      "tips": [
+        "Use permanent bindings if caching needed",
+        "Dispose controllers in onClose",
+        "Prefer const widgets",
+        "Split UI into smaller stateless components"
+      ]
+    },
+    "accessibility": {
+      "semantics": true,
+      "min_tap_size": 48
+    },
+    "tests": {
+      "unit": [
+        "repository returns parsed model",
+        "controller maps API to state"
+      ],
+      "widget": [
+        "renders loading/data states",
+        "form validation shows errors"
+      ],
+      "navigation": [
+        "navigates on success"
+      ]
+    },
+    "acceptance_criteria": [
+      "Screen loads initial data via repository using HttpService",
+      "User actions show instant toast feedback",
+      "No unnecessary rebuilds; smooth performance",
+      "All strings localized"
+    ]
+  },
+  "output_format": {
+    "generate": {
+      "controller": "<ScreenController.dart>",
+      "models": [
+        "<PrimaryModel>.dart",
+        "<NestedModel>.dart"
+      ],
+      "repository": "<ScreenRepository.dart>",
+      "views": [
+        "<ScreenWidget>.dart",
+        "components/<PartWidget>.dart"
+      ],
+      "bindings": "<ScreenBinding.dart>",
+      "routes": "append_to_routes_map",
+      "localization_en": "append_to_en_US.json"
+    },
+    "notes": [
+      "Do not create a new HTTP client",
+      "Keep files inside modules/<screen_key>/",
+      "Do not expose secrets in code"
+    ]
+  },
+  "screens": [
+    {
+      "screen": "WhatsApp Message Template Create Screen",
+      "purpose": "Enables users to create and customize WhatsApp message templates with dynamic placeholders and text styling options for automated or personalized communication.",
+      "ui_elements": {
+        "static": [
+          "AppBar with back icon",
+          "Screen title 'Message template'",
+          "Section label 'Message suggestion'",
+          "Style suggestion bar below message input"
+        ],
+        "dynamic": [
+          "TextField for Title",
+          "Multiline TextField for Message",
+          "Horizontal list of suggestion chips (e.g., Name, Address, my name) shown above keyboard",
+          "Style options bar (Italic, Bold, etc.) displayed below message box when typing",
+          "Button labeled 'Saved'"
+        ]
+      },
+      "layout_recommendations": [
+        "Use Scaffold with AppBar and body wrapped in SafeArea",
+        "Use Column with crossAxisAlignment.start and mainAxisAlignment.start",
+        "Wrap content in SingleChildScrollView or use resizeToAvoidBottomInset: true for keyboard handling",
+        "Apply Padding(EdgeInsets.symmetric(horizontal: 16, vertical: 8)) for consistent spacing",
+        "Display label suggestion bar above the keyboard using Positioned or a Flutter widget like BottomAppBar / Overlay",
+        "Show style suggestion bar (italic, bold, underline) below the message box using a Row inside a Container with light background and subtle border",
+        "Use ElevatedButton for 'Saved' with primary blue background and rounded corners"
+      ],
+      "input_controls": [
+        {
+          "type": "text_field",
+          "label": "Title",
+          "hint": "Enter template title",
+          "keyboard": "text",
+          "max_length": 100,
+          "required": true
+        },
+        {
+          "type": "text_field",
+          "label": "Message",
+          "hint": "Enter your WhatsApp message",
+          "keyboard": "multiline",
+          "max_lines": 6,
+          "required": true,
+          "special_behavior": [
+            "Supports inserting placeholders (e.g., #name, #address)",
+            "Displays style toolbar (italic, bold, etc.) below text box when active",
+            "Auto-focus maintains label suggestions above keyboard"
+          ]
+        }
+      ],
+      "user_interactions": [
+        "Tap 'Saved' button to store or update message template",
+        "Tap on any label suggestion chip (e.g., Name) to insert its tag (e.g., #name) at the current cursor position in the message field",
+        "Tap on style suggestion icons (Italic, Bold, Underline) to apply text style to the selected text",
+        "Keyboard focus triggers label suggestion bar visibility above keyboard",
+        "Tap back icon to return to previous screen"
+      ],
+      "validation_rules": {
+        "title": "required, min_length: 3, max_length: 100",
+        "message": "required, min_length: 5",
+        "placeholder_format": "If label clicked, must be inserted as #label in message"
+      },
+      "actions": [
+        {
+          "type": "button",
+          "label": "Saved",
+          "action": "save_message_template",
+          "state_behavior": [
+            "enabled when title and message valid",
+            "disabled otherwise"
+          ]
+        },
+        {
+          "type": "chip",
+          "label": "Name",
+          "action": "insert_placeholder_into_message",
+          "insert_format": "#name"
+        },
+        {
+          "type": "chip",
+          "label": "Address",
+          "action": "insert_placeholder_into_message",
+          "insert_format": "#address"
+        },
+        {
+          "type": "chip",
+          "label": "my name",
+          "action": "insert_placeholder_into_message",
+          "insert_format": "#my_name"
+        },
+        {
+          "type": "style_button",
+          "label": "Bold",
+          "action": "apply_text_style_bold",
+          "icon": "format_bold"
+        },
+        {
+          "type": "style_button",
+          "label": "Italic",
+          "action": "apply_text_style_italic",
+          "icon": "format_italic"
+        },
+        {
+          "type": "style_button",
+          "label": "Underline",
+          "action": "apply_text_style_underline",
+          "icon": "format_underlined"
+        }
+      ]
+    }
+  ],
+  "api_details": []
+}
