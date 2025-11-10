@@ -10,6 +10,7 @@ https://chatgpt.com/share/690961e2-09a4-800b-9656-35aad9f3a738
 https://github.com/surya-lawsikho/CMS-Prototype
 https://github.com/Abdikhafar-hub/Havenly-Pro-Backend
 
+https://github.com/OS-LAB-DaejinUniv/identino
 
 https://github.com/jbergloda1/flutter_overlay_window_plus
 
