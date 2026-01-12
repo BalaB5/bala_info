@@ -1,0 +1,9 @@
+git config --system core.longpaths true
+
+
+cd C:\Users\Bala\Downloads\itr
+del .git\index.lock
+git reset
+git stash
+
+git filter-repo --force --path ui/ --path-rename ui/:_dev/
