@@ -2,7 +2,9 @@ https://github.com/Hassan-Ali-Mehdi-3024/Call-Recorder
 https://github.com/ahmedAkramKhalil/TeletalkerApp
 https://github.com/muneebwanee/Dash
 
-
+https://www.manektech.com/work/call-recorder-app-development-case-study
+https://github.com/DigitalCreationsCo/recordcall
+https://github.com/copilot/share/4a0b1106-40a4-84f3-a842-1e4e6438213c
 
 android.permission.INTERNET
 android.permission.ACCESS_NETWORK_STATE
