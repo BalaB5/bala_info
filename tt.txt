@@ -1,0 +1,31 @@
+
+- automatically  call reocrd upload on api after end the call 
+- if app call recorder not have ah audio search call record from app call recorder then upload on api 
+
+1. Auto Upload After Call Ends
+- Detect when a phone call ends.
+- Automatically retrieve the recorded audio file from the app’s call recorder.
+- Upload the audio file to the backend API without user interaction.
+
+2. Fallback: Search for Recording
+- If the app does not directly provide the recorded audio file:
+    - Search the device storage for the latest call recording file.
+    - Identify the correct file based on timestamp, call duration, or naming pattern.
+    - Once found, upload the file to the API.
+
+3. Error Handling
+- If no recording is found, log the failure and retry (optional).
+- Handle upload failures with retry mechanism.
+- Ensure no duplicate uploads for the same call.
+
+4. Permissions & Requirements
+- Ensure required permissions are granted:
+    - Call logs access
+    - Storage/media access
+    - (If applicable) call recording access
+- Handle permission denial gracefully.
+
+5. Performance Considerations
+    - Run upload in the background (e.g., using background services or workers).
+    - Avoid blocking the UI.
+    - Optimize for minimal battery and data usage.
