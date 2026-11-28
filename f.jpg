@@ -1,0 +1,520 @@
+# AI Course Study Material Generator — Multi-Agent RAG Platform
+
+## Project Objective
+
+Build a complete, production-ready AI-powered Course Study Material Generator using a Multi-Agent System, Retrieval-Augmented Generation (RAG), and Human-in-the-Loop (HITL) validation.
+
+The platform must transform uploaded course documents and syllabus information into structured, accurate, comprehensive study materials through an end-to-end AI workflow.
+
+The system must support multiple AI model providers, automatic model switching when token limits or provider quotas are reached, task recovery, human review, and multiple downloadable study-material formats, including audio.
+
+The platform must function as a reliable AI content-generation system, not merely a chatbot.
+
+---
+
+## 1. Course Details Input
+
+The user must be able to create a course generation project by providing:
+
+- Course Name
+- Course Duration
+- Course Description
+- Syllabus / Course Structure
+- High-Level Topics
+- Learning Objectives
+- Target Audience / Student Level
+- Preferred Study Material Language
+- Preferred Content Depth
+- Negative Prompt / Content Restrictions
+- Uploaded Reference Documents
+
+### Supported Reference Documents
+
+- PDF
+- DOCX
+- PPTX
+- TXT
+- Markdown
+- Scanned documents with OCR support
+
+The negative prompt must be respected throughout the entire generation workflow.
+
+Examples:
+- Avoid irrelevant topics.
+- Do not include unsupported facts.
+- Avoid unnecessary repetition.
+- Do not use overly complex explanations.
+- Do not generate content outside the syllabus.
+- Avoid a specific writing style or content format.
+
+---
+
+## 2. End-to-End AI Workflow
+
+Implement the complete workflow:
+
+**Upload Course Details → Analyze Syllabus → Build Knowledge Base → Generate Study Materials → AI Validation → Human-in-the-Loop Review → Final Output**
+
+Each stage must have a clearly defined state, output, validation status, and recovery mechanism.
+
+### Stage 1 — Course Initialization
+
+Create a course generation project and store all submitted course details.
+
+The system must create a unique project ID and maintain its complete generation history.
+
+### Stage 2 — Document Processing
+
+Process all uploaded documents.
+
+- Extract text and document structure.
+- Detect headings, chapters, sections, tables, and page numbers.
+- Perform OCR for scanned documents.
+- Identify duplicate documents.
+- Extract document metadata.
+- Store source references.
+
+### Stage 3 — Syllabus Analysis Agent
+
+Analyze the syllabus and course details.
+
+The agent must:
+
+- Understand the complete course structure.
+- Identify modules, chapters, and subtopics.
+- Extract learning objectives.
+- Identify important and prerequisite topics.
+- Detect missing syllabus information.
+- Create a structured syllabus hierarchy.
+- Build a chapter-wise generation plan.
+
+The output must be structured and saved before material generation begins.
+
+### Stage 4 — RAG Knowledge Base
+
+Build a course-specific knowledge base using uploaded reference documents.
+
+Requirements:
+
+- Semantic chunking.
+- Embedding generation.
+- Vector database storage.
+- Metadata-based filtering.
+- Hybrid retrieval using vector and keyword search.
+- Course, chapter, topic, document, and page-level references.
+- Source-grounded retrieval.
+
+The knowledge base must prevent information from unrelated courses from being mixed into the current course.
+
+### Stage 5 — Multi-Agent Study Material Generation
+
+Use a specialized multi-agent workflow.
+
+#### Course Planner Agent
+Creates the chapter-wise generation plan and determines the required content.
+
+#### RAG Research Agent
+Retrieves relevant source information and provides evidence with document references.
+
+#### Study Material Writer Agent
+Generates structured study notes, explanations, definitions, examples, and summaries.
+
+#### Question Generator Agent
+Creates MCQs, short-answer questions, long-answer questions, and practice questions.
+
+#### Exam Preparation Agent
+Identifies important topics, revision points, and exam-oriented content.
+
+#### Quality Reviewer Agent
+Reviews the generated content for accuracy, completeness, relevance, readability, and source grounding.
+
+Agents must have clear responsibilities and structured inputs and outputs.
+
+Avoid unnecessary agent communication. Use controlled workflows and shared state.
+
+---
+
+## 3. AI Validation System
+
+Implement a dedicated AI validation stage before human review.
+
+The validation system must evaluate:
+
+- Factual accuracy
+- Source grounding
+- Syllabus coverage
+- Topic completeness
+- Content relevance
+- Duplicate content
+- Incorrect or unsupported statements
+- Question and answer consistency
+- MCQ option quality
+- Correct answer validation
+- Language quality
+- Negative prompt compliance
+- Content structure and formatting
+
+The validation agent must produce a structured validation report containing:
+
+- Validation status
+- Quality score
+- Detected issues
+- Missing information
+- Source verification results
+- Recommended corrections
+
+If validation fails, the workflow must route the content back to the appropriate generation agent for correction.
+
+Implement configurable validation thresholds and a maximum retry limit.
+
+If the content still fails validation, mark it as requiring human intervention instead of endlessly regenerating it.
+
+---
+
+## 4. Human-in-the-Loop Review System
+
+Human review is mandatory before final publication.
+
+Implement a complete review interface where the administrator or authorized reviewer can inspect generated study materials.
+
+The reviewer must be able to:
+
+- View generated content chapter by chapter.
+- View source references and supporting documents.
+- View AI validation reports.
+- Edit generated content.
+- Approve content.
+- Reject content.
+- Request regeneration.
+- Add review comments.
+- Approve individual chapters.
+- Approve the complete course.
+- Compare original and revised content.
+
+### Review Workflow
+
+Generated Content → AI Validation → Human Review → Approved / Rejected / Revision Required
+
+The workflow must support:
+
+- Pending Review
+- Approved
+- Rejected
+- Revision Required
+- Regenerating
+- Published
+
+Rejected or revision-requested content must return to the appropriate generation stage with reviewer feedback.
+
+Human approval must be recorded with reviewer identity, timestamp, and revision history.
+
+The system must never publish unapproved content when human approval is required.
+
+---
+
+## 5. Multi-Provider AI Model Management
+
+Implement a centralized AI Model Provider Management system.
+
+The platform must support multiple AI providers and model APIs, including:
+
+- Google Gemini
+- OpenAI
+- OpenAI-compatible API providers
+- OpenCode-compatible model integrations where supported
+- OpenRouter or other configurable model aggregators
+- Additional providers through extensible adapters
+
+Do not hardcode a single AI provider.
+
+### Provider Configuration
+
+Allow administrators to configure:
+
+- Provider name
+- API endpoint
+- API key
+- Available models
+- Model capabilities
+- Context window
+- Maximum output tokens
+- Token or usage limits
+- Provider priority
+- Cost configuration
+- Rate limits
+- Enabled / Disabled status
+
+API credentials must be encrypted and securely managed.
+
+### Intelligent Model Routing
+
+Implement a Model Router that selects the best available model based on:
+
+- Task type
+- Model capability
+- Context length
+- Token availability
+- Provider availability
+- Cost
+- Quality requirements
+- Configured priority
+
+Use different models for different tasks when appropriate.
+
+For example:
+
+- Syllabus analysis → reasoning-capable model
+- Study notes generation → high-quality text model
+- MCQ generation → structured-output-capable model
+- Content validation → independent review model
+- Translation → multilingual model
+
+### Automatic Token / Quota Fallback
+
+If the current model reaches its token limit, quota limit, rate limit, or provider usage restriction:
+
+1. Detect the provider error.
+2. Determine whether the failure is temporary or quota-related.
+3. Select the next eligible configured provider or model.
+4. Preserve the current task state.
+5. Resume the failed task using the existing inputs and outputs.
+6. Continue generation without restarting the entire course.
+7. Record the provider switch in the execution history.
+
+The system must support automatic provider switching for the same task.
+
+Do not lose previously generated chapters or completed stages.
+
+Implement retry policies, exponential backoff, provider health checks, circuit breakers, and task checkpoints.
+
+Do not retry indefinitely for invalid API keys, unsupported models, or permanent configuration errors.
+
+---
+
+## 6. Task Persistence and Recovery
+
+Use persistent workflow state.
+
+Every generation task must maintain:
+
+- Project ID
+- Course ID
+- Chapter ID
+- Current workflow stage
+- Current agent
+- Selected model and provider
+- Task status
+- Input references
+- Generated output
+- Validation results
+- Retry count
+- Provider fallback history
+- Human review status
+
+If the application restarts, a provider fails, or generation is interrupted, the system must resume from the last successful checkpoint.
+
+The system must support:
+
+- Pause generation
+- Resume generation
+- Cancel generation
+- Retry failed tasks
+- Regenerate individual chapters
+- Regenerate selected sections
+- Continue with another model provider
+
+Use background task execution for long-running generation jobs.
+
+---
+
+## 7. Study Material Output
+
+Generate structured study materials based on the course syllabus.
+
+The output must include:
+
+### Course-Level Materials
+- Course overview
+- Complete syllabus
+- Learning objectives
+- Course summary
+- Study roadmap
+
+### Chapter-Level Materials
+- Chapter introduction
+- Detailed study notes
+- Topic-wise explanations
+- Important definitions
+- Examples
+- Key concepts
+- Summary
+- Revision notes
+- Important questions
+
+### Examination Materials
+- MCQs
+- MCQ answers with explanations
+- Short-answer questions
+- Long-answer questions
+- Practice tests
+- Important topics
+- Revision checklist
+
+All content must maintain consistent formatting and chapter structure.
+
+---
+
+## 8. Multiple Download Formats
+
+Provide downloadable study materials in multiple formats.
+
+Required formats:
+
+- PDF
+- DOCX
+- Markdown
+- HTML
+- TXT
+- JSON
+
+Allow users to download:
+
+- Complete course materials
+- Individual chapters
+- Selected sections
+- Question banks
+- MCQ sets
+- Revision notes
+- Approved final content
+
+Generated files must preserve headings, tables, lists, question numbering, and source references wherever applicable.
+
+Only approved content should be included in final published downloads.
+
+---
+
+## 9. Audio Study Materials
+
+Generate audio versions of approved study materials.
+
+The system must support:
+
+- Chapter-wise audio
+- Topic-wise audio
+- Full-course audio
+- Audio summaries
+- Revision audio
+- Multiple language support
+- Configurable voice and speaking speed
+
+Use a suitable Text-to-Speech provider to generate audio.
+
+Required audio output formats:
+
+- MP3
+- WAV
+
+Store audio files and associate them with the relevant course, chapter, and content revision.
+
+Support audio generation as a separate background task so that audio failures do not interrupt text generation.
+
+Optionally support Whisper-based speech-to-text for voice input, transcription, or spoken student feedback.
+
+---
+
+## 10. Technology Architecture
+
+Use the following technology stack:
+
+### Backend
+- Python
+- Django
+- Django REST Framework
+
+### AI Agent System
+- LangGraph for multi-agent orchestration
+- LangChain for LLM integrations and tools
+- Structured outputs and typed state management
+
+### RAG
+- Qdrant vector database
+- PostgreSQL full-text search
+- Embedding models
+- Hybrid retrieval
+- Document metadata and source tracking
+
+### Background Processing
+- Celery
+- Redis
+
+### File Processing
+- PyMuPDF
+- python-docx
+- python-pptx
+- OCR integration
+
+### Frontend
+- Modern responsive web application
+- Course management dashboard
+- Generation progress dashboard
+- AI validation report interface
+- Human review interface
+- Download and export interface
+
+### Storage
+- PostgreSQL for application data
+- Object storage or filesystem abstraction for documents, exports, and audio
+
+---
+
+## 11. Dashboard and Monitoring
+
+Create a dashboard showing:
+
+- Total courses
+- Active generation projects
+- Completed projects
+- Failed tasks
+- Pending human reviews
+- Approved materials
+- Provider usage
+- Token consumption
+- Model switching history
+- Generation progress
+- Validation scores
+
+Provide detailed logs for every agent execution and provider request.
+
+Logs must be useful for debugging without exposing API keys or sensitive document content unnecessarily.
+
+---
+
+## 12. Important System Requirements
+
+- Modular and maintainable architecture.
+- Proper database relationships.
+- Secure API key management.
+- Course-level data isolation.
+- Reliable background processing.
+- Persistent workflow state.
+- Automatic provider fallback.
+- Human approval before publication.
+- Source-grounded RAG generation.
+- Structured agent outputs.
+- Configurable retry and validation policies.
+- No unnecessary agent loops.
+- No loss of completed generation work.
+- Responsive and professional UI.
+- Clear error handling and execution logs.
+
+## Final Development Goal
+
+Build a complete, functional, end-to-end AI Course Study Material Generator.
+
+The platform must allow a user to submit course details and reference documents, automatically analyze the syllabus, generate comprehensive study materials using multiple specialized AI agents and RAG, validate the content, send it through a human review workflow, and produce approved downloadable documents and audio materials.
+
+The system must support multiple AI model providers and automatically switch to another available model when token limits, quotas, or provider restrictions prevent the current model from continuing.
+
+Prioritize reliability, content accuracy, workflow persistence, source verification, and human-controlled publication.
+
+Do not build only a demo or a basic chatbot. Implement the complete system with a production-oriented architecture, working backend workflows, database persistence, provider management, review controls, and a usable web interface.
